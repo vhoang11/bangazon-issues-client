@@ -12,7 +12,7 @@ function RegisterForm({ user, updateUser }) {
     profile_image_url: '',
     email: '',
     active: true,
-    is_staff: true,
+    is_seller: true,
     uid: user.uid,
   });
 

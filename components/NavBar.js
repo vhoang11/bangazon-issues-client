@@ -1,37 +1,58 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
-import Link from 'next/link';
-import {
-  Navbar, //
-  Container,
-  Nav,
-  Button,
-} from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import { signOut } from '../utils/auth';
 
-export default function NavBar() {
+function NavBar() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container>
-        <Link passHref href="/">
-          <Navbar.Brand>CHANGE ME</Navbar.Brand>
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
-            <Link passHref href="/">
-              <Nav.Link>Home</Nav.Link>
-            </Link>
-            <Link passHref href="/delete-me">
-              <Nav.Link>Delete Me</Nav.Link>
-            </Link>
-            <Button variant="danger" onClick={signOut}>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container fluid>
+        <Navbar.Brand style={{ marginLeft: '75px' }} href="/">CLOSET SHARE</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav
+            className="me-auto my-2 my-lg-0"
+            style={{ maxHeight: '100px' }}
+            navbarScroll
+          >
+            <Nav.Link href="/products">Products</Nav.Link>
+            <Nav.Link href="/categories">Categories</Nav.Link>
+          </Nav>
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+            />
+            <Button
+              style={{ marginRight: '15px' }}
+              variant="outline-success"
+            >Search
+            </Button>
+          </Form>
+          <NavDropdown style={{ marginRight: '15px' }} title="Account" id="navbarScrollingDropdown">
+            <NavDropdown.Item href="profile">Profile</NavDropdown.Item>
+            <NavDropdown.Item href="orderHistory">
+              Order History
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <Button
+              style={{ marginLeft: '15px' }}
+              variant="danger"
+              onClick={signOut}
+            >
               Sign Out
             </Button>
-          </Nav>
+          </NavDropdown>
+          <Nav.Link href="/cart" style={{ marginRight: '75px' }}>Cart</Nav.Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 }
+
+export default NavBar;

@@ -8,7 +8,6 @@ import { deleteProduct } from '../../utils/data/productData';
 const ProductCard = ({
   id,
   title,
-  created_on,
   image_url,
   price,
   onUpdate,
@@ -21,24 +20,22 @@ const ProductCard = ({
   };
 
   return (
-    <Card className="text-center" style={{ width: '220px' }}>
-      <Card.Img variant="top" src={image_url} alt={title} style={{ height: '250px' }} />
-      <Card.Header>{title}</Card.Header>
-      <Card.Body style={{ height: '100px' }}>
+    <Card className="text-center" style={{ width: '240px', margin: '20px' }}>
+      <Card.Img variant="top" src={image_url} alt={title} style={{ height: '300px' }} />
+      <Card.Header style={{ height: '100px' }}>{title}</Card.Header>
+      <Card.Body style={{ height: '50px' }}>
         <Card.Title style={{ fontSize: '14px' }}>Price: {price}</Card.Title>
-        <Card.Text style={{ fontSize: '12px' }}>Created On: {created_on}
-        </Card.Text>
       </Card.Body>
       <div className="d-flex">
         {/* <Button
           onClick={() => {
-            router.push(`/users/edit/${id}`);
+            router.push(`/products/edit/${id}`);
           }}
           style={{
             margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
           }}
         >
-          Edit User
+          Edit
         </Button> */}
         <Button
           onClick={() => {
@@ -67,7 +64,6 @@ const ProductCard = ({
 ProductCard.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  created_on: PropTypes.number.isRequired,
   image_url: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   onUpdate: PropTypes.func.isRequired,

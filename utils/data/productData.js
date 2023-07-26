@@ -81,7 +81,7 @@ const updateProduct = (payload) => new Promise((resolve, reject) => {
 });
 const createProduct = (payload) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/products`, {
-    method: 'Product',
+    method: 'Post',
     headers: {
       'Content-Type': 'application/json',
     },

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Container } from 'react-bootstrap';
 import { useAuth } from './context/authContext';
 import Loading from '../components/Loading';
 import Signin from '../components/Signin';
@@ -17,8 +18,10 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
   if (user) {
     return (
       <>
-        <NavBar /> {/* NavBar only visible if user is logged in and is in every view */}
-        <div className="container">{'valid' in user ? <RegisterForm user={user} updateUser={updateUser} /> : <Component {...pageProps} />}</div>
+        <Container>
+          <NavBar /> {/* NavBar only visible if user is logged in and is in every view */}
+          <div className="container">{'valid' in user ? <RegisterForm user={user} updateUser={updateUser} /> : <Component {...pageProps} />}</div>
+        </Container>
       </>
     );
   }

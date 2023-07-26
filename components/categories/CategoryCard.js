@@ -14,12 +14,15 @@ const CategoryCard = ({
   const router = useRouter();
   return (
     <>
-      <Card style={{ marginBottom: '30px' }}>
+      <Card style={{
+        marginBottom: '30px', width: '14rem', backgroundColor: '#6699CC', margin: '30px',
+      }}
+      >
         {/* <Link passHref href=/categories/${key}>
       <Card.Text>{label}</Card.Text>
     </Link> */}
         <Button
-          style={{ backgroundColor: '#003049', padding: '20px' }}
+          style={{ backgroundColor: '#6699CC', padding: '20px' }}
           onClick={() => {
             router.push(`/categories/${id}`);
           }}

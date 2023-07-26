@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { getAllProducts } from '../utils/data/productData';
 import ProductCard from '../components/products/ProductCard';
@@ -18,7 +18,11 @@ function AllProducts() {
   };
 
   return (
-    <>
+    <div className="text-center my-4" style={{ marginTop: '100px' }}>
+      <Head>
+        <title>Products</title>
+      </Head>
+      <img src="https://www.raconteur.net/wp-content/uploads/2020/10/img_p12.jpg" alt="hero" style={{ width: '100%' }} />
       <h1 style={{ marginTop: '30px', marginLeft: '20px' }}>All Products</h1>
       <div>
         <div>
@@ -35,7 +39,7 @@ function AllProducts() {
           </Button>
         </div>
       </div>
-      <div className="text-center my-4 d-flex">
+      <div className="text-center my-4" id="products-section">
         {products.map((product) => (
 
           <section key={`product--${product.id}`}>
@@ -44,8 +48,19 @@ function AllProducts() {
 
         ))}
       </div>
-    </>
+    </div>
   );
 }
+
+// function getProductData(id) {
+//   const productData = AllProducts.find((product) => product.id === id);
+
+//   if (productData === undefined) {
+//     console.log(`Product data does not exist for ID: ${id}`);
+//     return undefined;
+//   }
+
+//   return productData;
+// }
 
 export default AllProducts;

@@ -18,5 +18,17 @@ a {
 }
 
 body {
-  background-color: #f5f5f5;
+  background-color: #F8F9FA;
+}
+
+#products-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#categories-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }

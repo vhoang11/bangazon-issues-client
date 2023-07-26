@@ -1,11 +1,9 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useAuth } from '../utils/context/authContext';
-import { createSubscription, deleteSubscription, getMySubscriptions } from '../utils/data/subscriptionData';
 
 const UserCard = ({
   id,
@@ -18,7 +16,6 @@ const UserCard = ({
 }) => {
   const router = useRouter();
   const { user } = useAuth();
-  const [counter, setCounter] = useState(0);
   const payload = {
     createdOn: '2023-06-14',
     endedOn: '2023-06-14',
@@ -26,14 +23,6 @@ const UserCard = ({
     followId: `${uid}`,
   };
   console.warn(payload);
-
-  useEffect(() => {
-    getMySubscriptions(user.uid).then((data) => {
-      console.warn(data);
-      (data.map((post) => (
-        (post.follower_id.uid === uid ? setCounter(1) : ''))));
-    });
-  }, [id, uid, user.uid]);
 
   return (
     <Card className="text-center" style={{ width: '220px' }}>
@@ -66,43 +55,6 @@ const UserCard = ({
         >
           View
         </Button>
-
-        {counter === 0
-          ? (
-            <Button
-              style={{
-                margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
-              }}
-              onClick={
-
-                 () => {
-                   setCounter(1);
-                   createSubscription(payload);
-                 }
-                }
-            >
-              Subscribe
-            </Button>
-          ) : (
-            <Button
-              style={{
-                margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
-              }}
-              onClick={
-
-             () => {
-               getMySubscriptions(user.uid).then((data) => {
-                 console.warn(data);
-                 (data.map((post) => (
-                   (post.follower_id.uid === uid && post.author_id.uid === user.uid ? deleteSubscription(post.id) : ''))));
-               });
-               setCounter(0);
-             }
-            }
-            >
-              UnSubscribe
-            </Button>
-          )}
 
       </div>
 

@@ -10,10 +10,12 @@ const ProductCard = ({
   title,
   image_url,
   price,
-  product,
   onAdd,
 }) => {
   const router = useRouter();
+  const handleClick = () => {
+    onAdd({ id, title, price });
+  };
 
   return (
     <Card className="text-center" style={{ width: '240px', margin: '20px' }}>
@@ -34,7 +36,7 @@ const ProductCard = ({
           View
         </Button>
         <Button
-          onClick={() => onAdd(product)}
+          onClick={handleClick}
           style={{
             margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
           }}
@@ -52,8 +54,6 @@ ProductCard.propTypes = {
   title: PropTypes.string.isRequired,
   image_url: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  product: PropTypes.object.isRequired,
   onAdd: PropTypes.func.isRequired,
 };
 

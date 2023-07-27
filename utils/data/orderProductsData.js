@@ -14,7 +14,7 @@ const createOrderProduct = (payload) => new Promise((resolve, reject) => {
 });
 
 const getSingleOrderProduct = (id) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/ordeproducts/${id}`, {
+  fetch(`${clientCredentials.databaseURL}/orderproducts/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

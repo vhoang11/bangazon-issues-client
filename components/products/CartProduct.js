@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { CartContext } from '../../pages/CartContext';
-import { getProductData } from '../../pages/productsStore';
+import { getProductData } from '../../pages/productStore';
 
 function CartProduct(props) {
   const cart = useContext(CartContext);

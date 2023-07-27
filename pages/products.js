@@ -8,7 +8,7 @@ import ProductCard from '../components/products/ProductCard';
 function AllProducts() {
   const [products, setProducts] = useState([]);
   const router = useRouter();
-  const [cartItems, setCartItems] = useState([]);
+  // const [products, setproducts] = useState([]);
 
   useEffect(() => {
     getAllProducts().then((data) => setProducts(data));
@@ -19,13 +19,13 @@ function AllProducts() {
   };
 
   const onAdd = (product) => {
-    const exist = cartItems.find((x) => x.id === product.id);
+    const exist = products.find((x) => x.id === product.id);
     if (exist) {
-      setCartItems(
-        cartItems.map((x) => (x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x)),
+      setProducts(
+        products.map((x) => (x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x)),
       );
     } else {
-      setCartItems([...cartItems, { ...product, qty: 1 }]);
+      setProducts([...products, { ...product, qty: 1 }]);
     }
   };
 

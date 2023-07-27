@@ -1,41 +1,39 @@
 /* eslint-disable no-tabs */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GiShoppingCart } from 'react-icons/gi';
+import { useRouter } from 'next/router';
+import getOrderByCustomerId from '../utils/data/orderData';
+import { getOrderProductsByOrderId } from '../utils/data/orderProductsData';
+import OrderProductCard from './orderProducts/OrderProductCard';
 
 function CartModal({ ...props }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   // const { products } = data;
-  const [cartItems, setCartItems] = useState([]);
-  const onAdd = (product) => {
-    const exist = cartItems.find((x) => x.id === product.id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((x) => (x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x)),
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, qty: 1 }]);
-    }
-  };
-  const onRemove = (product) => {
-    const exist = cartItems.find((x) => x.id === product.id);
-    if (exist.qty === 1) {
-      setCartItems(cartItems.filter((x) => x.id !== product.id));
-    } else {
-      setCartItems(
-        cartItems.map((x) => (x.id === product.id ? { ...exist, qty: exist.qty - 1 } : x)),
-      );
-    }
-  };
-  const itemsPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
-  const taxPrice = itemsPrice * 0.14;
-  const shippingPrice = itemsPrice > 2000 ? 0 : 20;
-  const totalPrice = itemsPrice + taxPrice + shippingPrice;
+  const router = useRouter();
+  const [orderProducts, setOrderProducts] = useState([]);
+  const [orderDetails, setOrderDetails] = useState(null); // State to store order details (including order ID)
+
+  useEffect(() => {
+    // Fetch order details by customer ID here and update the state
+    getOrderByCustomerId()
+      .then((orderData) => {
+        setOrderDetails(orderData);
+
+        // Fetch order products by order ID here and update the state
+        getOrderProductsByOrderId(orderData.orderId)
+          .then((orderProductsData) => {
+            setOrderProducts(orderProductsData);
+          })
+          .catch((error) => console.error('Error fetching order products:', error));
+      })
+      .catch((error) => console.error('Error fetching order details:', error));
+  }, []);
 
   return (
     <>
@@ -50,72 +48,25 @@ function CartModal({ ...props }) {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <aside className="block">
-            <h2>Cart Items</h2>
-            <div>
-              {cartItems.length === 0 && <div>Cart is empty</div>}
-              {cartItems.map((item) => (
-                <div key={item.id} className="row">
-                  <div className="col-2">{item.title}</div>
-                  <div className="col-2">
-                    <button
-                      type="button"
-                      onClick={() => onRemove(item)}
-                      className="remove"
-                    >
-                      -
-                    </button>{' '}
-                    <button
-                      type="button"
-                      onClick={() => onAdd(item)}
-                      className="add"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <div className="col-2 text-right">
-                    {item.qty} x ${item.price.toFixed(2)}
-                  </div>
-                </div>
-              ))}
-
-              {cartItems.length !== 0 && (
-              <>
-                <hr />
-                <div className="row">
-                  <div className="col-2">Items Price</div>
-                  <div className="col-1 text-right">${itemsPrice.toFixed(2)}</div>
-                </div>
-                <div className="row">
-                  <div className="col-2">Tax Price</div>
-                  <div className="col-1 text-right">${taxPrice.toFixed(2)}</div>
-                </div>
-                <div className="row">
-                  <div className="col-2">Shipping Price</div>
-                  <div className="col-1 text-right">
-                    ${shippingPrice.toFixed(2)}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-2">
-                    <strong>Total Price</strong>
-                  </div>
-                  <div className="col-1 text-right">
-                    <strong>${totalPrice.toFixed(2)}</strong>
-                  </div>
-                </div>
-                <hr />
-                <div className="row">
-                  <button
-                    type="button"
-                    onClick={() => alert('Implement Checkout!')}
-                  >
-                    Checkout
-                  </button>
-                </div>
-              </>
-              )}
-            </div>
+            <div>Items in Cart</div>
+            {orderProducts.map((orderProduct) => (
+              <div key={orderProduct.id}>
+                <OrderProductCard
+                  id={orderDetails.id}
+                  title={orderProducts.title}
+                  image_url={orderProducts.image_url}
+                  quantity={orderProducts.quantity}
+                  price={orderProducts.price}
+                />
+              </div>
+            ))}
+            <Button
+              onClick={() => {
+                router.push('/createOrder');
+              }}
+            >
+              Checkout
+            </Button>
           </aside>
         </Offcanvas.Body>
       </Offcanvas>
@@ -138,12 +89,11 @@ CartModal.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      qty: PropTypes.number.isRequired,
+      image_url: PropTypes.string.isRequired,
+      quantity: PropTypes.number.isRequired,
       price: PropTypes.number.isRequired,
     }),
   ).isRequired,
-  onAdd: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
 };
 
 export default Cart;

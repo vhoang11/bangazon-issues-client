@@ -14,7 +14,9 @@ const ProductCard = ({
 }) => {
   const router = useRouter();
   const handleClick = () => {
-    onAdd({ id, title, price });
+    onAdd({
+      id, image_url, title, price,
+    });
   };
 
   return (
@@ -38,7 +40,7 @@ const ProductCard = ({
         <Button
           onClick={handleClick}
           style={{
-            margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
+            margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
           }}
         >
           Add to Cart

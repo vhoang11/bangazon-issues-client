@@ -1,5 +1,6 @@
 /* eslint-disable no-tabs */
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -10,13 +11,11 @@ function CartModal({ ...props }) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // const { cartItems, onAdd, onRemove } = props;
-  // const itemTotal = (quantity, price) => quantity * price;
-  // const itemsPrice = cartItems.map((item) => itemTotal(item.qty, item.price));
-  // const totalItemsPrice = itemsPrice.reduce((a, b) => a + b, 0);
-  // const taxPrice = totalItemsPrice * 0.0925;
-  // const shippingPrice = 10;
-  // const totalPrice = totalItemsPrice + taxPrice + shippingPrice;
+  const { cartItems, onAdd, onRemove } = props;
+  const itemsPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
+  const taxPrice = itemsPrice * 0.14;
+  const shippingPrice = itemsPrice > 2000 ? 0 : 20;
+  const totalPrice = itemsPrice + taxPrice + shippingPrice;
 
   return (
     <>
@@ -30,13 +29,13 @@ function CartModal({ ...props }) {
           <Offcanvas.Title>Shopping Cart</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          {/* <aside className="block col-1">
+          <aside className="block col-1">
             <h2>Cart Items</h2>
             <div>
               {cartItems.length === 0 && <div>Cart is empty</div>}
               {cartItems.map((item) => (
                 <div key={item.id} className="row">
-                  <div className="col-2">{item.name}</div>
+                  <div className="col-2">{item.title}</div>
                   <div className="col-2">
                     <button
                       type="button"
@@ -97,7 +96,7 @@ function CartModal({ ...props }) {
               </>
               )}
             </div>
-          </aside> */}
+          </aside>
         </Offcanvas.Body>
       </Offcanvas>
     </>
@@ -114,5 +113,17 @@ function Cart() {
     </>
   );
 }
+CartModal.propTypes = {
+  cartItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      qty: PropTypes.number.isRequired,
+      price: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
+};
 
 export default Cart;

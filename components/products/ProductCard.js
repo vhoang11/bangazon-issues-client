@@ -1,23 +1,19 @@
 /* eslint-disable camelcase */
+import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { deleteProduct } from '../../utils/data/productData';
 
 const ProductCard = ({
   id,
   title,
   image_url,
   price,
-  onUpdate,
+  product,
+  onAdd,
 }) => {
   const router = useRouter();
-  const deleteThisProduct = () => {
-    if (window.confirm('Delete user?')) {
-      deleteProduct(id).then(() => onUpdate());
-    }
-  };
 
   return (
     <Card className="text-center" style={{ width: '240px', margin: '20px' }}>
@@ -27,16 +23,6 @@ const ProductCard = ({
         <Card.Title style={{ fontSize: '14px' }}>Price: {price}</Card.Title>
       </Card.Body>
       <div className="d-flex">
-        {/* <Button
-          onClick={() => {
-            router.push(`/products/edit/${id}`);
-          }}
-          style={{
-            margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
-          }}
-        >
-          Edit
-        </Button> */}
         <Button
           onClick={() => {
             router.push(`/products/${id}`);
@@ -48,12 +34,12 @@ const ProductCard = ({
           View
         </Button>
         <Button
-          onClick={deleteThisProduct}
+          onClick={() => onAdd(product)}
           style={{
             margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
           }}
         >
-          Delete
+          Add to Cart
         </Button>
       </div>
 
@@ -66,7 +52,9 @@ ProductCard.propTypes = {
   title: PropTypes.string.isRequired,
   image_url: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  onUpdate: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  product: PropTypes.object.isRequired,
+  onAdd: PropTypes.func.isRequired,
 };
 
 export default ProductCard;

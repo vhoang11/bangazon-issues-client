@@ -92,6 +92,18 @@ const createProduct = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getProductsBySellerId = (sellerId) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/products?sellerId=${sellerId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
-  getAllProducts, deleteProduct, getSingleProduct, updateProduct, createProduct, getMyProducts, getProductsByCategory,
+  getAllProducts, deleteProduct, getSingleProduct, updateProduct, createProduct, getMyProducts, getProductsByCategory, getProductsBySellerId,
 };

@@ -8,6 +8,7 @@ import ProductCard from '../components/products/ProductCard';
 function AllProducts() {
   const [products, setProducts] = useState([]);
   const router = useRouter();
+  // const [products, setproducts] = useState([]);
 
   useEffect(() => {
     getAllProducts().then((data) => setProducts(data));
@@ -15,6 +16,17 @@ function AllProducts() {
 
   const displayProducts = () => {
     getAllProducts().then((data) => setProducts(data));
+  };
+
+  const onAdd = (product) => {
+    const exist = products.find((x) => x.id === product.id);
+    if (exist) {
+      setProducts(
+        products.map((x) => (x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x)),
+      );
+    } else {
+      setProducts([...products, { ...product, qty: 1 }]);
+    }
   };
 
   return (
@@ -43,7 +55,7 @@ function AllProducts() {
         {products.map((product) => (
 
           <section key={`product--${product.id}`}>
-            <ProductCard id={product.id} title={product.title} image_url={product.image_url} price={product.price} onUpdate={displayProducts} UserId={product.seller_id} />
+            <ProductCard id={product.id} title={product.title} image_url={product.image_url} price={product.price} onUpdate={displayProducts} UserId={product.seller_id} product={product} onAdd={onAdd} />
           </section>
 
         ))}

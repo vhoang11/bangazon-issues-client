@@ -15,7 +15,6 @@ function Home() {
   }, []);
   return (
     <>
-
       <div
         className="text-center d-flex flex-column justify-content-center align-content-center"
       >
@@ -26,6 +25,12 @@ function Home() {
         {categories.map((category) => (
           <CategoryCard key={category.id} id={category.id} label={category.label} categoryObj={category} onUpdate={getAllCategories} />
         ))}
+      </div>
+
+      <div
+        className="text-center d-flex flex-column justify-content-center align-content-center"
+      >
+        <img src="https://techcrunch.com/wp-content/uploads/2016/06/screen-shot-2016-06-16-at-3-29-53-pm.png" alt="how it works" style={{ width: '100%', marginTop: '50px' }} />
       </div>
     </>
   );

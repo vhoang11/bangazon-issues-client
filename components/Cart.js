@@ -2,7 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-tabs */
 import { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -33,8 +33,14 @@ function CartModal({ ...props }) {
             ? (
               <>
                 <p>Items in your cart:</p>
-                {cart.items.map((currentProduct, idx) => (
-                  <CartProduct key={idx} id={currentProduct.id} quantity={currentProduct.quantity} />
+                {cart.items.map((currentProduct) => (
+                  <CartProduct
+                    key={currentProduct.id}
+                    id={currentProduct.id}
+                    title={currentProduct.title}
+                    price={currentProduct.price}
+                    image_url={currentProduct.image_url}
+                  />
                 ))}
 
                 {/* <h1>Total: {cart.getTotalCost().toFixed(2)}</h1> */}
@@ -58,16 +64,12 @@ function Cart() {
     </>
   );
 }
-CartModal.propTypes = {
-  cartItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      image_url: PropTypes.string.isRequired,
-      quantity: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-};
+// CartModal.propTypes = {
+//   id: PropTypes.number.isRequired,
+//   title: PropTypes.string.isRequired,
+//   image_url: PropTypes.string.isRequired,
+//   quantity: PropTypes.number.isRequired,
+//   price: PropTypes.number.isRequired,
+// };
 
 export default Cart;

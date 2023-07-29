@@ -58,7 +58,7 @@ function CartProduct({
 }) {
   const cart = useContext(CartContext);
   const removeItem = () => {
-    if (window.confirm(`Remove ${title}?`)) {
+    if (window.confirm('Remove item?')) {
       cart.deleteFromCart(id).then(() => onUpdate());
     }
   };

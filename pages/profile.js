@@ -53,7 +53,7 @@ const Profile = () => {
       </div>
 
       <div>
-        <h2 style={{ marginTop: '50px' }}>Inventory</h2>
+        <h2 style={{ marginTop: '50px' }}>Your Closet</h2>
       </div>
 
       <div className="text-center my-4" id="products-section">

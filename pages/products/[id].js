@@ -1,19 +1,23 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
+// import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Form } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { deleteProduct, getSingleProduct } from '../../utils/data/productData';
+import { CartContext } from '../CartContext';
 
-function ProductDetails({ onAdd }) {
+function ProductDetails() {
   const [product, setProduct] = useState({});
   const [category, setCategory] = useState('');
   const [seller, setSeller] = useState('');
   const router = useRouter();
   const { id } = router.query;
   const { user } = useAuth();
+  const cart = useContext(CartContext);
+  const productQuantity = cart.getProductQuantity(id);
 
   useEffect(() => {
     getSingleProduct(id).then((data) => {
@@ -48,13 +52,17 @@ function ProductDetails({ onAdd }) {
           ? (
             <>
               <Button
-                style={{ margin: '10px', backgroundColor: '#003049' }}
+                style={{
+                  margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
+                }}
                 onClick={deleteThisProduct}
               >
                 Delete
               </Button>
               <Button
-                style={{ margin: '10px', backgroundColor: '#003049' }}
+                style={{
+                  margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
+                }}
                 onClick={() => {
                   router.push(`/products/edit/${id}`);
                 }}
@@ -63,27 +71,35 @@ function ProductDetails({ onAdd }) {
               </Button>
             </>
           ) : ''}
-        <Button
-          style={{ margin: '10px', backgroundColor: '#003049' }}
-          onClick={onAdd}
-        >
-          Add To Cart
-        </Button>
-        <Button
-          style={{ margin: '10px', backgroundColor: '#003049' }}
-          onClick={() => {
-            router.push(`/reviews/${id}`);
-          }}
-        >
-          Reviews
-        </Button>
+        { productQuantity > 0
+          ? (
+            <>
+              <Form>
+                <Form.Label>In Cart: {productQuantity}</Form.Label>
+                <Col>
+                  <Button onClick={() => cart.addOneToCart(id)} className="mx-2" style={{ backgroundColor: '#6699CC' }}>+</Button>
+                  <Button onClick={() => cart.removeOneFromCart(id)} className="mx-2" style={{ backgroundColor: '#6699CC' }}>-</Button>
+                </Col>
+              </Form>
+              <Button variant="danger" onClick={() => cart.deleteFromCart(id)} className="my-2" style={{ fontSize: '10px' }}>Remove from cart</Button>
+            </>
+          )
+          : (
+            <Button
+              style={{
+                margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
+              }}
+              onClick={() => cart.addOneToCart(id)}
+            >Add To Cart
+            </Button>
+          )}
       </div>
     </div>
   );
 }
 
-ProductDetails.propTypes = {
-  onAdd: PropTypes.func.isRequired,
-};
+// ProductDetails.propTypes = {
+//   onAdd: PropTypes.func.isRequired,
+// };
 
 export default ProductDetails;

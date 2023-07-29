@@ -1,39 +1,21 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-tabs */
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { GiShoppingCart } from 'react-icons/gi';
-import { useRouter } from 'next/router';
-import getOrderByCustomerId from '../utils/data/orderData';
-import { getOrderProductsByOrderId } from '../utils/data/orderProductsData';
-import OrderProductCard from './orderProducts/OrderProductCard';
+import { CartContext } from '../pages/CartContext';
+import CartProduct from './products/CartProduct';
 
 function CartModal({ ...props }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // const { products } = data;
-  const router = useRouter();
-  const [orderProducts, setOrderProducts] = useState([]);
-  const [orderDetails, setOrderDetails] = useState(null); // State to store order details (including order ID)
-
-  useEffect(() => {
-    // Fetch order details by customer ID here and update the state
-    getOrderByCustomerId()
-      .then((orderData) => {
-        setOrderDetails(orderData);
-
-        // Fetch order products by order ID here and update the state
-        getOrderProductsByOrderId(orderData.orderId)
-          .then((orderProductsData) => {
-            setOrderProducts(orderProductsData);
-          })
-          .catch((error) => console.error('Error fetching order products:', error));
-      })
-      .catch((error) => console.error('Error fetching order details:', error));
-  }, []);
+  const cart = useContext(CartContext);
+  const productsCount = cart.items.reduce((sum, product) => sum + product.quantity, 0);
 
   return (
     <>
@@ -47,27 +29,19 @@ function CartModal({ ...props }) {
           <Offcanvas.Title>Shopping Cart</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <aside className="block">
-            <div>Items in Cart</div>
-            {orderProducts.map((orderProduct) => (
-              <div key={orderProduct.id}>
-                <OrderProductCard
-                  id={orderDetails.id}
-                  title={orderProducts.title}
-                  image_url={orderProducts.image_url}
-                  quantity={orderProducts.quantity}
-                  price={orderProducts.price}
-                />
-              </div>
-            ))}
-            <Button
-              onClick={() => {
-                router.push('/createOrder');
-              }}
-            >
-              Checkout
-            </Button>
-          </aside>
+          {productsCount > 0
+            ? (
+              <>
+                <p>Items in your cart:</p>
+                {cart.items.map((currentProduct, idx) => (
+                  <CartProduct key={idx} id={currentProduct.id} quantity={currentProduct.quantity} />
+                ))}
+
+                {/* <h1>Total: {cart.getTotalCost().toFixed(2)}</h1> */}
+              </>
+            )
+            : <h4>Your cart is empty!</h4>}
+          <Button style={{ marginTop: '20px', backgroundColor: '#6699CC' }}>Checkout</Button>
         </Offcanvas.Body>
       </Offcanvas>
     </>

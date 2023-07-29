@@ -5,18 +5,24 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// eslint-disable-next-line import/no-extraneous-dependencies
 // import { useState } from 'react';
 // import { useRouter } from 'next/router';
 // import { PiCoatHangersize } from 'react-icons/pi';
-import { signOut } from '../utils/auth';
+// import Cart from './Cart';
+import { Form } from 'react-bootstrap';
+import { useContext } from 'react';
 import Cart from './Cart';
-import SearchBar from './SearchBar';
+import { signOut } from '../utils/auth';
+import { CartContext } from '../pages/CartContext';
 
 function NavBar() {
+  const cart = useContext(CartContext);
+  const productsCount = cart.items.reduce((sum, product) => sum + product.quantity, 0);
+
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary">
+
+      <Navbar expand="lg" className="bg-body-tertiary shadow-sm" id="navbar">
         <Container fluid>
           <Navbar.Brand href="/">CLOSET SHARE</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -30,12 +36,21 @@ function NavBar() {
               <Nav.Link href="/products">Products</Nav.Link>
               <Nav.Link href="/categories">Categories</Nav.Link>
             </Nav>
-            <SearchBar />
+            <Form className="d-flex">
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="outline-success" style={{ marginRight: '15px' }}>Search</Button>
+            </Form>
             <NavDropdown style={{ marginRight: '15px' }} title="Account" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
               <NavDropdown.Item href="/orderHistory">
                 Order History
               </NavDropdown.Item>
+              <NavDropdown.Item href="/products/new">Add Product</NavDropdown.Item>
               <NavDropdown.Divider />
               <Button
                 style={{ marginLeft: '15px' }}
@@ -46,9 +61,11 @@ function NavBar() {
               </Button>
             </NavDropdown>
             <Cart />
+            <div>{productsCount}</div>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
     </>
   );
 }

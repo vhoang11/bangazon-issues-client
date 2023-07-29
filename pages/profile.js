@@ -13,7 +13,7 @@ const Profile = () => {
   const [sellerProducts, setSellerProducts] = useState([]);
 
   const displayProducts = () => {
-    getProductsBySellerId(user.id).then((data) => setSellerProducts(data));
+    getProductsBySellerId(user.sellerId).then((data) => setSellerProducts(data));
   };
 
   useEffect(() => {

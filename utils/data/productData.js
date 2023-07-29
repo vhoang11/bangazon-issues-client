@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { clientCredentials } from '../client';
 
 const getAllProducts = () => new Promise((resolve, reject) => {
@@ -17,7 +18,7 @@ const getAllProducts = () => new Promise((resolve, reject) => {
     })
     .catch(reject);
 });
-const getMyProducts = (uid) => new Promise((resolve, reject) => {
+const getMyProducts = (seller_id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/products`, {
     method: 'GET',
     headers: {
@@ -26,7 +27,7 @@ const getMyProducts = (uid) => new Promise((resolve, reject) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      const usersProducts = Object.values(data).filter((item) => item.user_id.uid === uid);
+      const usersProducts = Object.values(data).filter((item) => item.sellerId === seller_id);
       resolve(usersProducts);
     })
     .catch(reject);
@@ -92,8 +93,10 @@ const createProduct = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getProductsBySellerId = (sellerId) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/products?sellerId=${sellerId}`, {
+// eslint-disable-next-line camelcase
+const getProductsBySellerId = (seller_id) => new Promise((resolve, reject) => {
+  // eslint-disable-next-line camelcase
+  fetch(`${clientCredentials.databaseURL}/products?sellerId=${seller_id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

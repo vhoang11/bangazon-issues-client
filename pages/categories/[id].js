@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { getSingleCategory } from '../../utils/data/categoryData';
 import { getProductsByCategory } from '../../utils/data/productData';
 import ProductCard from '../../components/products/ProductCard';
@@ -22,15 +23,20 @@ function CategoryDetails() {
   console.warn(product);
 
   return (
-    <>
-      {/* <h1>{category.category_id.label}</h1> */}
-      {product.map((products) => (
+    <div className="text-center my-4" style={{ marginTop: '100px' }}>
+      <Head>
+        <title>Category</title>
+      </Head>
+      <div className="text-center my-4" id="category-section">
+        {product.map((products) => (
 
-        <section key={`product--${product.id}`}>
-          <ProductCard id={products.id} title={products.title} image_url={products.image_url} price={products.price} UserId={products.seller_id} />
-        </section>
-      ))}
-    </>
+          <section key={`product--${product.id}`}>
+            <ProductCard id={products.id} title={products.title} image_url={products.image_url} price={products.price} UserId={products.seller_id} />
+          </section>
+        ))}
+      </div>
+
+    </div>
   );
 }
 

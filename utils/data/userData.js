@@ -45,7 +45,7 @@ const createUser = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateUser = (payload) => new Promise((resolve, reject) => {
+const updateUserProfile = (payload) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/users/${payload.id}.json`, {
     method: 'PUT',
     headers: {
@@ -92,7 +92,7 @@ export {
   getUsers,
   getSingleUser,
   createUser,
-  updateUser,
+  updateUserProfile,
   getUserPosts,
   viewUserDetails,
   viewUserPosts,

@@ -27,8 +27,14 @@ body {
   justify-content: center;
 }
 
-#categories-section {
+#category-section {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+#navbar {
+  position: fixed;
+  top: 0px;
+  width: 90%;
 }
